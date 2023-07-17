@@ -11,7 +11,7 @@ import ReactDOM from 'react-dom';
 import {Worker, Viewer } from '@react-pdf-viewer/core';
 import * as pdfjs from "pdfjs-dist";
 import { defaultLayoutPlugin } from '@react-pdf-viewer/default-layout';
-
+import { ClearChatButton } from "../components/ClearChatButton";
 import {
   Accordion,
   AccordionContent,
@@ -22,6 +22,7 @@ import {
 export default function Home() {
   const [query, setQuery] = useState<string>('');
   const [loading, setLoading] = useState<boolean>(false);
+  //const [error, setError] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [messageState, setMessageState] = useState<{
     messages: Message[];
@@ -108,7 +109,7 @@ export default function Home() {
         }));
       }
       console.log('messageState', messageState);
-
+      console.log("History: ",history)
       setLoading(false);
 
       //scroll to bottom
@@ -119,6 +120,28 @@ export default function Home() {
       console.log('error', error);
     }
   }
+
+  
+  const limpiarChat = () => {
+    //question = "";
+    //error && setError(undefined);
+    //setActiveCitation(undefined);
+    //setActiveAnalysisPanelTab(undefined);
+    setMessageState({
+      messages: [
+        {
+          message: 'Hola, Que le gustaría aprender acerca de sus documentos?',
+          type: 'apiMessage',
+        },
+      ],
+      history: [],
+    });
+    console.log("Hola Mundo");
+ };
+  
+
+
+
 
   const modalBody = (reference: any) => (
     <div
@@ -199,6 +222,7 @@ export default function Home() {
   return (
     <>
       <Layout>
+      <ClearChatButton className={styles.commandButton} onClick={limpiarChat}/>
         <div className="mx-auto flex flex-col gap-4">
           <h1 className="text-2xl font-bold leading-[1.1] tracking-tighter text-center">
             Chat con tus Datos
@@ -242,7 +266,8 @@ export default function Home() {
                   }
                   return (
                     <>
-                      <div key={`chatMessage-${index}`} className={className}>
+                    
+                      <div key={`chatMessage-${index}`} className={className} id='micapa'>
                         {icon}
                         <div className={styles.markdownanswer}>
                           <ReactMarkdown linkTarget="_blank">
@@ -347,6 +372,7 @@ export default function Home() {
               </div>
             )}
           </main>
+          <button id="eliminar">Eliminar Chat</button>
         </div>
       </Layout> 
     </>
